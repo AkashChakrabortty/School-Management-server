@@ -18,10 +18,19 @@ async function run() {
        .db("School-Management")
        .collection("presentStudent");
   try {
-    //find all element from database
+    //insert check in student
     app.post("/CheckinStudent", async (req, res) => {
       const studentInfo = req.body;
-      const result = presentStudentCollection.insertOne(studentInfo)
+      const result = presentStudentCollection.insertOne(studentInfo);
+      res.send(result);
+    });
+    //get present student
+    app.get("/getPresentStudent", async (req, res) => {
+       const query = {};
+       const cursor = presentStudentCollection
+         .find(query)
+         .sort({ milliseconds: -1 });
+       const result = await cursor.toArray();
       res.send(result);
     });
   } catch {}
